@@ -107,16 +107,16 @@ namespace MyNamespace.Units
         
         private void MoveTowards(Vector3 position, TweenCallback onReachCallback)
         {
-            //TODO: try to optimize
             //It is better to create one Tween and use SetPositionAndRotation to not send update events twice 
             //Also it's more optimal to use LocalPosition due to avoidance of world position calculation
             _movingSequence = DOTween.Sequence();
-            
-            //in fact here speed is delay. Should change logic to constant speed
 
-            var arriveDaley = speed;// (_transform.position - position).magnitude / speed;
+            var moveDirection = _transform.position - position;
+            var arriveDaley = moveDirection.magnitude / speed;
+            var rotateAngles = Vector3.Angle(transform.forward, moveDirection);
+            var rotateDaley = rotateAngles / rotateSpeed;
             
-            _movingSequence.Insert(0, _transform.DOLookAt(position, rotateSpeed));
+            _movingSequence.Insert(0, _transform.DOLookAt(position, rotateDaley));
             _movingSequence.Insert(0, _transform.DOMove(position, arriveDaley).SetEase(Ease.Linear));
             _movingSequence.onComplete += onReachCallback;
             _movingSequence.Play();

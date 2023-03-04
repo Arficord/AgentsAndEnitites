@@ -97,7 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8121208456935067901}
   seeker: {fileID: 654668582}
-  rotateSpeed: 0.5
+  rotateSpeed: 360
   speed: 1
 --- !u!95 &8121208456935067901 stripped
 Animator:
