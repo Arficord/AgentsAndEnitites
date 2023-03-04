@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using MyNamespace.Pooling;
+using MyNamespace.Utils.Math;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -15,9 +16,6 @@ namespace MyNamespace.Units
         [SerializeField] private UnitController unitPrefab;
         [SerializeField] private float radius = 10f;
         [SerializeField] private Vector3 center = Vector3.zero;
-
-        //TODO: delete. Currently here for debug purpose
-        [SerializeField] private Transform debugMoveTarget;
         
         public int ActiveUnitsCount => unitsPool.CountActive;
         public float Radius => radius;
@@ -25,18 +23,22 @@ namespace MyNamespace.Units
         
         private ObjectPool<UnitController> unitsPool;
         
+        private Crowd _unitCrowd;
+        
         private void Awake()
         {
             unitsPool = new ObjectPool<UnitController>(CreatePooledItem, OnTakeFromPool, OnReturnedToPool,
                 OnDestroyPoolObject);
+            _unitCrowd = new Crowd(center, radius);
         }
 
         public void SpawnUnit(Vector3 position, Quaternion rotation)
         {
             var takenUnit = unitsPool.Get();
             takenUnit.SetPositionAndRotation(position, rotation);
-            takenUnit.DebugTarget = debugMoveTarget;
+            takenUnit.SetCrowd(_unitCrowd);
         }
+        
         
         #region Pooling
         private UnitController CreatePooledItem()

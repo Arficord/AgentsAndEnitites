@@ -26,7 +26,7 @@ namespace MyNamespace.UI
 
         private void SpawnUnitAtRandomCirclePosition()
         {
-            var position = MathUtils.GetRandomPointOnCircleXZ(unitsManager.Center, unitsManager.Radius);
+            var position = RandomMathUtils.GetRandomPointOnCircleXZ(unitsManager.Center, unitsManager.Radius);
             unitsManager.SpawnUnit(position, quaternion.identity);
         }
 

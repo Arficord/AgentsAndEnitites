@@ -13,30 +13,34 @@ namespace MyNamespace.Units
         [SerializeField] private float rotateSpeed = 1f;
         [SerializeField] private float speed = 1f;
         
-        //TODO: delete. Currently here for debug purpose
-        public Transform DebugTarget;
-        
         private Transform _transform;
 
         private Path _path;
         private int _destinationNodeId;
+
+        private Crowd _crowd;
         
         private void Awake()
         {
             _transform = transform;
         }
         
-        //TODO: delete and delegate this work to manager
-        private void Start()
+        public void SetCrowd(Crowd crowd)
         {
-            CalculatePath();
+            _crowd = crowd;
+            _crowd.SetNewDestination(this);
         }
-
+        
         public void SetPositionAndRotation(Vector3 position, Quaternion rotation)
         {
             transform.SetPositionAndRotation(position, rotation);
         }
-        
+
+        public void SetDestination(Vector3 destination)
+        {
+            seeker.StartPath(_transform.position, destination, OnPathComplete);
+        }
+
         #region PoolRequests
         public void OnTakeFromPoolRequest()
         {
@@ -53,18 +57,12 @@ namespace MyNamespace.Units
             Destroy(gameObject);
         }
         #endregion
-        
-        private void CalculatePath()
-        {
-            seeker.StartPath(_transform.position, DebugTarget.position, OnPathComplete);
-        }
 
         private void OnPathComplete(Path path)
         {
             if (path.error)
             {
-                //TODO: next step throw callback to some sort of crowd manager
-                Debug.LogError(path.errorLog, gameObject);
+                _crowd.OnPathError(this, path);
                 return;
             }
             
@@ -90,8 +88,7 @@ namespace MyNamespace.Units
 
             if (_destinationNodeId >= _path.vectorPath.Count)
             {
-                //TODO: next step throw callback to some sort of crowd manager
-                Debug.Log("ReachedEndPoint");
+                _crowd.OnReachedDestination(this);
                 return;
             }
             
