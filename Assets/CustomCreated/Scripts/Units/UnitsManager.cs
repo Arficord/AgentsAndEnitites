@@ -20,11 +20,25 @@ namespace MyNamespace.Units
         public int ActiveUnitsCount => unitsPool.CountActive;
         public float Radius => radius;
         public Vector3 Center => center;
+
+        public UnitLookRule UnitLookRule
+        {
+            get => _unitLookRule;
+            set
+            {
+                _unitLookRule = value;
+                foreach (var unit in activeUnits)
+                {
+                    unit.ApplyLookRule(_unitLookRule);
+                }
+            }
+        }
         
         private ObjectPool<UnitController> unitsPool;
         private List<UnitController> activeUnits = new List<UnitController>();
         
         private Crowd _unitCrowd;
+        private UnitLookRule _unitLookRule;
         
         private void Awake()
         {
@@ -39,6 +53,7 @@ namespace MyNamespace.Units
             activeUnits.Add(unit);
             unit.SetPositionAndRotation(position, rotation);
             unit.SetCrowd(_unitCrowd);
+            unit.ApplyLookRule(_unitLookRule);
         }
 
         public void RemoveAllUnits()

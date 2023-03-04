@@ -39,6 +39,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5717370821310611589, guid: d079cd0e6137a44b58864c3a91ad119a,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717370821310611589, guid: d079cd0e6137a44b58864c3a91ad119a,
+        type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 30c7250f82f33c245a5cc67cf4bfc8c9, type: 2}
@@ -90,6 +95,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3030fd78bdf0c504390da26a378f51e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 8121208456935067901}
   seeker: {fileID: 654668582}
-  rotateSpeed: 1
+  rotateSpeed: 0.5
   speed: 1
+--- !u!95 &8121208456935067901 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5717370821310611589, guid: d079cd0e6137a44b58864c3a91ad119a,
+    type: 3}
+  m_PrefabInstance: {fileID: 4606191106322092152}
+  m_PrefabAsset: {fileID: 0}

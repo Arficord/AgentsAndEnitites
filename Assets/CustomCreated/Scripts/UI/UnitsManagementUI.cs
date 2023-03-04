@@ -6,6 +6,7 @@ using MyNamespace.Utils.Math;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace MyNamespace.UI
 {
@@ -13,6 +14,13 @@ namespace MyNamespace.UI
     {
         [SerializeField] private UnitsManager unitsManager;
         [SerializeField] private TextMeshProUGUI unitsCountText;
+        [SerializeField] private Toggle useAnimationsToggle;
+        
+        private void Start()
+        {
+            useAnimationsToggle.isOn = unitsManager.UnitLookRule.UseAnimations;
+            useAnimationsToggle.onValueChanged.AddListener(OnAnimatorToggleValueChanged);
+        }
 
         public void SpawnUnitsAtRandomCirclePosition(int amount)
         {
@@ -57,6 +65,13 @@ namespace MyNamespace.UI
         private void UpdateUnitsCountText()
         {
             unitsCountText.text = unitsManager.ActiveUnitsCount.ToString();
+        }
+
+        private void OnAnimatorToggleValueChanged(bool flag)
+        {
+            var lookRule = unitsManager.UnitLookRule;
+            lookRule.UseAnimations = flag;
+            unitsManager.UnitLookRule = lookRule;
         }
     }
 }

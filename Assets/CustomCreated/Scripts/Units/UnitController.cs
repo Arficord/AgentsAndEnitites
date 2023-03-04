@@ -9,6 +9,7 @@ namespace MyNamespace.Units
 {
     public class UnitController : MonoBehaviour
     {
+        [SerializeField] private Animator animator;
         [SerializeField] private Seeker seeker;
         [SerializeField] private float rotateSpeed = 1f;
         [SerializeField] private float speed = 1f;
@@ -20,7 +21,7 @@ namespace MyNamespace.Units
         private int _destinationNodeId;
 
         private Crowd _crowd;
-        
+
         private void Awake()
         {
             _transform = transform;
@@ -40,6 +41,11 @@ namespace MyNamespace.Units
         public void SetDestination(Vector3 destination)
         {
             seeker.StartPath(_transform.position, destination, OnPathComplete);
+        }
+
+        public void ApplyLookRule(UnitLookRule lookRule)
+        {
+            animator.enabled = lookRule.UseAnimations;
         }
 
         #region PoolRequests
@@ -107,8 +113,11 @@ namespace MyNamespace.Units
             _movingSequence = DOTween.Sequence();
             
             //in fact here speed is delay. Should change logic to constant speed
+
+            var arriveDaley = speed;// (_transform.position - position).magnitude / speed;
+            
             _movingSequence.Insert(0, _transform.DOLookAt(position, rotateSpeed));
-            _movingSequence.Insert(0, _transform.DOMove(position, speed).SetEase(Ease.Linear));
+            _movingSequence.Insert(0, _transform.DOMove(position, arriveDaley).SetEase(Ease.Linear));
             _movingSequence.onComplete += onReachCallback;
             _movingSequence.Play();
         }
