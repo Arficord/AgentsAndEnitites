@@ -14,7 +14,7 @@ namespace MyNamespace.Units
         [SerializeField] private float speed = 1f;
         
         //TODO: delete. Currently here for debug purpose
-        [SerializeField] private Transform debugTarget;
+        public Transform DebugTarget;
         
         private Transform _transform;
 
@@ -32,9 +32,31 @@ namespace MyNamespace.Units
             CalculatePath();
         }
 
+        public void SetPositionAndRotation(Vector3 position, Quaternion rotation)
+        {
+            transform.SetPositionAndRotation(position, rotation);
+        }
+        
+        #region PoolRequests
+        public void OnTakeFromPoolRequest()
+        {
+            gameObject.SetActive(true);
+        }
+        
+        public void OnReturnedToPoolRequest()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void OnDestroyRequest()
+        {
+            Destroy(gameObject);
+        }
+        #endregion
+        
         private void CalculatePath()
         {
-            seeker.StartPath(_transform.position, debugTarget.position, OnPathComplete);
+            seeker.StartPath(_transform.position, DebugTarget.position, OnPathComplete);
         }
 
         private void OnPathComplete(Path path)
@@ -82,6 +104,8 @@ namespace MyNamespace.Units
             //It is better to create one Tween and use SetPositionAndRotation to not send update events twice 
             //Also it's more optimal to use LocalPosition due to avoidance of world position calculation
             var sequence = DOTween.Sequence();
+            
+            //in fact here speed is delay. Should change logic to constant speed
             sequence.Insert(0, _transform.DOLookAt(position, rotateSpeed));
             sequence.Insert(0, _transform.DOMove(position, speed).SetEase(Ease.Linear));
             sequence.onComplete += onReachCallback;
