@@ -18,9 +18,12 @@ namespace MyNamespace.Units
 
         //TODO: delete. Currently here for debug purpose
         [SerializeField] private Transform debugMoveTarget;
-
+        
+        public int ActiveUnitsCount => unitsPool.CountActive;
+        public float Radius => radius;
+        public Vector3 Center => center;
+        
         private ObjectPool<UnitController> unitsPool;
-
         
         private void Awake()
         {
@@ -28,21 +31,13 @@ namespace MyNamespace.Units
                 OnDestroyPoolObject);
         }
 
-        public void SpawnUnit()
+        public void SpawnUnit(Vector3 position, Quaternion rotation)
         {
             var takenUnit = unitsPool.Get();
-            var spawnPoint = GetRandomSpawnPointOnCircle();
-            var rotation = Quaternion.identity;
-            takenUnit.SetPositionAndRotation(spawnPoint, rotation);
+            takenUnit.SetPositionAndRotation(position, rotation);
             takenUnit.DebugTarget = debugMoveTarget;
         }
-
-        private Vector3 GetRandomSpawnPointOnCircle()
-        {
-            var pointOnCircle = Random.insideUnitCircle.normalized * radius;
-            return new Vector3(center.x + pointOnCircle.x, center.y, center.z + pointOnCircle.y);
-        }
-
+        
         #region Pooling
         private UnitController CreatePooledItem()
         {
