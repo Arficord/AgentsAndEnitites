@@ -24,6 +24,30 @@ namespace MyNamespace.UI
             UpdateUnitsCountText();
         }
 
+        public void RemoveLastUnits(int amount)
+        {
+            var unitsAmount = unitsManager.ActiveUnitsCount;
+            var lastIndex = unitsAmount - amount;
+
+            if (lastIndex < 0)
+            {
+                lastIndex = 0;
+            }
+            
+            for (int i = unitsAmount - 1; i >= lastIndex; i--)
+            {
+                unitsManager.RemoveUnit(i);   
+            }
+
+            UpdateUnitsCountText();
+        }
+
+        public void RemoveAllUnits()
+        {
+            unitsManager.RemoveAllUnits();
+            UpdateUnitsCountText();
+        }
+
         private void SpawnUnitAtRandomCirclePosition()
         {
             var position = RandomMathUtils.GetRandomPointOnCircleXZ(unitsManager.Center, unitsManager.Radius);

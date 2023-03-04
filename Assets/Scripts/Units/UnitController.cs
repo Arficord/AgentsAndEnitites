@@ -15,6 +15,7 @@ namespace MyNamespace.Units
         
         private Transform _transform;
 
+        private Sequence _movingSequence;
         private Path _path;
         private int _destinationNodeId;
 
@@ -24,7 +25,7 @@ namespace MyNamespace.Units
         {
             _transform = transform;
         }
-        
+
         public void SetCrowd(Crowd crowd)
         {
             _crowd = crowd;
@@ -49,6 +50,7 @@ namespace MyNamespace.Units
         
         public void OnReturnedToPoolRequest()
         {
+            _movingSequence?.Kill();
             gameObject.SetActive(false);
         }
 
@@ -57,6 +59,8 @@ namespace MyNamespace.Units
             Destroy(gameObject);
         }
         #endregion
+
+        #region Moving
 
         private void OnPathComplete(Path path)
         {
@@ -100,13 +104,14 @@ namespace MyNamespace.Units
             //TODO: try to optimize
             //It is better to create one Tween and use SetPositionAndRotation to not send update events twice 
             //Also it's more optimal to use LocalPosition due to avoidance of world position calculation
-            var sequence = DOTween.Sequence();
+            _movingSequence = DOTween.Sequence();
             
             //in fact here speed is delay. Should change logic to constant speed
-            sequence.Insert(0, _transform.DOLookAt(position, rotateSpeed));
-            sequence.Insert(0, _transform.DOMove(position, speed).SetEase(Ease.Linear));
-            sequence.onComplete += onReachCallback;
-            sequence.Play();
+            _movingSequence.Insert(0, _transform.DOLookAt(position, rotateSpeed));
+            _movingSequence.Insert(0, _transform.DOMove(position, speed).SetEase(Ease.Linear));
+            _movingSequence.onComplete += onReachCallback;
+            _movingSequence.Play();
         }
+        #endregion
     }
 }

@@ -22,6 +22,7 @@ namespace MyNamespace.Units
         public Vector3 Center => center;
         
         private ObjectPool<UnitController> unitsPool;
+        private List<UnitController> activeUnits = new List<UnitController>();
         
         private Crowd _unitCrowd;
         
@@ -34,16 +35,37 @@ namespace MyNamespace.Units
 
         public void SpawnUnit(Vector3 position, Quaternion rotation)
         {
-            var takenUnit = unitsPool.Get();
-            takenUnit.SetPositionAndRotation(position, rotation);
-            takenUnit.SetCrowd(_unitCrowd);
+            var unit = unitsPool.Get();
+            activeUnits.Add(unit);
+            unit.SetPositionAndRotation(position, rotation);
+            unit.SetCrowd(_unitCrowd);
+        }
+
+        public void RemoveAllUnits()
+        {
+            for (int i = ActiveUnitsCount - 1; i >= 0; i--)
+            {
+                RemoveUnit(i);
+            }
         }
         
-        
+        public void RemoveUnit(int index)
+        {
+            if (index >= ActiveUnitsCount || index < 0)
+            {
+                Debug.LogError($"Tried to remove unit with index [{index}], while elements count is {ActiveUnitsCount}");
+                return;
+            }
+
+            var unit = activeUnits[index];
+            activeUnits.RemoveAt(index);
+            unitsPool.Release(unit);
+        }
+
         #region Pooling
         private UnitController CreatePooledItem()
         {
-            return GameObject.Instantiate(unitPrefab);
+            return Instantiate(unitPrefab);
         }
 
         private void OnTakeFromPool(UnitController unit)
