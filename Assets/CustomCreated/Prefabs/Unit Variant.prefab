@@ -19,37 +19,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2437060625171721727, guid: d079cd0e6137a44b58864c3a91ad119a,
         type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -40
-      objectReference: {fileID: 0}
-    - target: {fileID: 2437060625171721727, guid: d079cd0e6137a44b58864c3a91ad119a,
-        type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2437060625171721727, guid: d079cd0e6137a44b58864c3a91ad119a,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -40
-      objectReference: {fileID: 0}
-    - target: {fileID: 2437060625171721727, guid: d079cd0e6137a44b58864c3a91ad119a,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2437060625171721727, guid: d079cd0e6137a44b58864c3a91ad119a,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2437060625171721727, guid: d079cd0e6137a44b58864c3a91ad119a,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2437060625171721727, guid: d079cd0e6137a44b58864c3a91ad119a,
-        type: 3}
-      propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2437060625171721727, guid: d079cd0e6137a44b58864c3a91ad119a,
@@ -67,6 +37,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5717370821310611589, guid: d079cd0e6137a44b58864c3a91ad119a,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 30c7250f82f33c245a5cc67cf4bfc8c9, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d079cd0e6137a44b58864c3a91ad119a, type: 3}
 --- !u!1 &2910748166099898260 stripped
@@ -118,4 +93,3 @@ MonoBehaviour:
   seeker: {fileID: 654668582}
   rotateSpeed: 1
   speed: 1
-  DebugTarget: {fileID: 0}
